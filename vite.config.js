@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig(({ mode }) => {
   // Load environment variables based on mode (development/production)
@@ -11,6 +12,11 @@ export default defineConfig(({ mode }) => {
       vue(),
       vuetify({ autoImport: true })
     ],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
+    },
     server: {
       host: '0.0.0.0',  // Expose to network (accessible from outside localhost)
       port: 3000,
