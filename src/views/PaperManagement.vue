@@ -289,7 +289,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import axios from '@/config/axios'
 
 const loading = ref(false)
 const papers = ref([])

@@ -139,7 +139,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import axios from '@/config/axios'
 
 const loading = ref(false)
 const dialog = ref(false)
