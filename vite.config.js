@@ -8,6 +8,7 @@ export default defineConfig({
     vuetify({ autoImport: true })
   ],
   server: {
+    host: '0.0.0.0',  // Expose to network (accessible from outside localhost)
     port: 3000,
     proxy: {
       '/api': {
