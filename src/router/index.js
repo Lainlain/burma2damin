@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '../views/Dashboard.vue'
-import GiftManagement from '../views/GiftManagement.vue'
-import SliderManagement from '../views/SliderManagement.vue'
-import PaperManagement from '../views/PaperManagement.vue'
-import ThreeDManagement from '../views/ThreeDManagement.vue'
-import AppConfigView from '../views/AppConfigView.vue'
+
+// Lazy load routes for better initial page load performance
+const Dashboard = () => import('../views/Dashboard.vue')
+const GiftManagement = () => import('../views/GiftManagement.vue')
+const SliderManagement = () => import('../views/SliderManagement.vue')
+const PaperManagement = () => import('../views/PaperManagement.vue')
+const ThreeDManagement = () => import('../views/ThreeDManagement.vue')
+const AppConfigView = () => import('../views/AppConfigView.vue')
 
 const routes = [
   {

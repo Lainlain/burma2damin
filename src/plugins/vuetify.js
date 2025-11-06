@@ -1,12 +1,9 @@
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 
+// Tree-shaking: Only import Vuetify shell, components auto-imported by vite-plugin-vuetify
 export default createVuetify({
-  components,
-  directives,
   theme: {
     defaultTheme: 'burmaTheme',
     themes: {

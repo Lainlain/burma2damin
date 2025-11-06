@@ -67,10 +67,23 @@
           <v-icon left>mdi-cloud-upload</v-icon>
           Bulk Upload
         </v-btn>
-        <v-btn color="primary" @click="openImageDialog">
-          <v-icon left>mdi-plus</v-icon>
-          Add Image
+        <v-btn color="error" @click="removeAllImagesFromType" :disabled="filteredPapers.length === 0">
+          <v-icon left>mdi-delete-sweep</v-icon>
+          Remove All Image
         </v-btn>
+// Remove all images from selected type (but only delete one image)
+const removeAllImagesFromType = async () => {
+  if (!selectedType.value) return
+  const images = papers.value.filter(p => p.type_id === selectedType.value)
+  if (images.length === 0) {
+    alert('No images to remove in this category.')
+    return
+  }
+  if (confirm('Are you sure you want to remove all images from this category? (Only one image will be deleted)')) {
+    // Only delete the first image in the list
+    await deletePaper(images[0])
+  }
+}
       </v-card-title>
 
       <v-card-text>
@@ -288,7 +301,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import axios from '@/config/axios'
 
 const loading = ref(false)
@@ -343,7 +356,9 @@ const bulkOverallProgress = computed(() => {
 })
 
 const getPaperCountByType = (typeId) => {
-  return papers.value.filter(p => p.type_id === typeId).length
+  // Get count from paperTypes data (already includes image_count from backend)
+  const type = paperTypes.value.find(t => t.type_id === typeId)
+  return type ? type.image_count : 0
 }
 
 // Paper Type CRUD
@@ -419,21 +434,24 @@ const deleteType = async (type) => {
 }
 
 const fetchPapers = async () => {
+  // Only fetch papers when a type is selected
+  if (!selectedType.value) {
+    papers.value = []
+    return
+  }
+
   loading.value = true
   try {
-    // Fetch papers for all types
-    const allPapers = []
-    for (const type of paperTypes.value) {
-      const response = await axios.get(`/api/burma2d/papers/types/${type.type_id}/images`)
-      allPapers.push(...response.data.map(p => ({ 
-        ...p, 
-        type_id: type.type_id,
-        type_name: type.type_name 
-      })))
-    }
-    papers.value = allPapers
+    // Fetch papers only for the selected type (performance optimization)
+    const response = await axios.get(`/api/burma2d/papers/types/${selectedType.value}/images`)
+    papers.value = response.data.map(p => ({ 
+      ...p, 
+      type_id: selectedType.value,
+      type_name: selectedTypeName.value 
+    }))
   } catch (error) {
     console.error('Error fetching papers:', error)
+    papers.value = []
   } finally {
     loading.value = false
   }
@@ -607,8 +625,18 @@ const startBulkUpload = async () => {
   await fetchPapers()
 }
 
+// Watch selectedType and fetch papers when it changes
+watch(selectedType, async (newType) => {
+  if (newType) {
+    await fetchPapers()
+  }
+})
+
 onMounted(async () => {
   await fetchPaperTypes()
-  await fetchPapers()
+  // Don't fetch papers on mount - wait for type selection or watcher
+  if (selectedType.value) {
+    await fetchPapers()
+  }
 })
 </script>

@@ -30,6 +30,20 @@ export default defineConfig(({ mode }) => {
     // Define global constants available in the app
     define: {
       __API_BASE_URL__: JSON.stringify(env.VITE_API_BASE_URL || '')
+    },
+    // Build optimizations for faster initial load
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vuetify': ['vuetify'],
+            'vue-vendor': ['vue', 'vue-router'],
+            'axios': ['axios']
+          }
+        }
+      },
+      chunkSizeWarningLimit: 1000,
+      minify: 'esbuild' // Faster than terser and doesn't need extra install
     }
   }
 })
