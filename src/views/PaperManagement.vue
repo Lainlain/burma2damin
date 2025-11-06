@@ -625,18 +625,17 @@ const startBulkUpload = async () => {
   await fetchPapers()
 }
 
-// Watch selectedType and fetch papers when it changes
+// Watch selectedType and fetch papers when it changes (after initial mount)
+let isInitialLoad = true
 watch(selectedType, async (newType) => {
-  if (newType) {
+  if (newType && !isInitialLoad) {
     await fetchPapers()
   }
 })
 
 onMounted(async () => {
   await fetchPaperTypes()
-  // Don't fetch papers on mount - wait for type selection or watcher
-  if (selectedType.value) {
-    await fetchPapers()
-  }
+  await fetchPapers()
+  isInitialLoad = false
 })
 </script>

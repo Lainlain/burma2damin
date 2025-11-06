@@ -62,3 +62,15 @@ const menuItems = [
   { title: 'App Config', icon: 'mdi-cellphone-cog', route: '/appconfig' }
 ]
 </script>
+
+<style scoped>
+/* Prevent horizontal scrolling */
+:deep(.v-container) {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+:deep(.v-main) {
+  overflow-x: hidden;
+}
+</style>
