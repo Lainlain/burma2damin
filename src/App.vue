@@ -59,6 +59,7 @@ const menuItems = [
   { title: 'Slider Management', icon: 'mdi-image-multiple', route: '/sliders' },
   { title: 'Paper Management', icon: 'mdi-newspaper', route: '/papers' },
   { title: '3D Management', icon: 'mdi-dice-3', route: '/threed' },
+  { title: 'Chat Management', icon: 'mdi-message-text', route: '/chat' },
   { title: 'App Config', icon: 'mdi-cellphone-cog', route: '/appconfig' }
 ]
 </script>

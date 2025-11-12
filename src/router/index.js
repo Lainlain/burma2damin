@@ -7,6 +7,7 @@ const SliderManagement = () => import('../views/SliderManagement.vue')
 const PaperManagement = () => import('../views/PaperManagement.vue')
 const ThreeDManagement = () => import('../views/ThreeDManagement.vue')
 const AppConfigView = () => import('../views/AppConfigView.vue')
+const ChatManagement = () => import('../views/ChatManagement.vue')
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/appconfig',
     name: 'AppConfig',
     component: AppConfigView
+  },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: ChatManagement
   }
 ]
 
