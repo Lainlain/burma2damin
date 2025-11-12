@@ -220,11 +220,8 @@ export default {
     async loadMessages() {
       this.loading = true
       try {
-        // Note: This endpoint needs to be created or we use a dummy user_id
-        // For admin purposes, we should create a GET /admin/messages endpoint
-        const response = await axios.get('/api/burma2d/chat/messages', {
+        const response = await axios.get('/api/burma2d/chat/admin/messages', {
           params: {
-            user_id: 'admin',
             limit: 100
           }
         })
