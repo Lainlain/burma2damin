@@ -69,21 +69,8 @@
         </v-btn>
         <v-btn color="error" @click="removeAllImagesFromType" :disabled="filteredPapers.length === 0">
           <v-icon left>mdi-delete-sweep</v-icon>
-          Remove All Image
+          Remove All Images
         </v-btn>
-// Remove all images from selected type (but only delete one image)
-const removeAllImagesFromType = async () => {
-  if (!selectedType.value) return
-  const images = papers.value.filter(p => p.type_id === selectedType.value)
-  if (images.length === 0) {
-    alert('No images to remove in this category.')
-    return
-  }
-  if (confirm('Are you sure you want to remove all images from this category? (Only one image will be deleted)')) {
-    // Only delete the first image in the list
-    await deletePaper(images[0])
-  }
-}
       </v-card-title>
 
       <v-card-text>
@@ -538,6 +525,38 @@ const deletePaper = async (item) => {
       await fetchPapers()
     } catch (error) {
       console.error('Error deleting paper:', error)
+    }
+  }
+}
+
+// Remove all images from selected type
+const removeAllImagesFromType = async () => {
+  if (!selectedType.value) return
+  
+  const images = filteredPapers.value
+  if (images.length === 0) {
+    alert('No images to remove in this category.')
+    return
+  }
+  
+  const typeName = selectedTypeName.value
+  const confirmed = confirm(
+    `Are you sure you want to delete ALL ${images.length} images from "${typeName}"?\n\n` +
+    `This will permanently delete all images and cannot be undone!`
+  )
+  
+  if (confirmed) {
+    try {
+      loading.value = true
+      const response = await axios.delete(`/api/admin/paper/types/${selectedType.value}/images`)
+      alert(`Successfully deleted ${response.data.count} images from "${typeName}"`)
+      await fetchPapers()
+      await fetchPaperTypes() // Refresh type counts
+    } catch (error) {
+      console.error('Error deleting all images:', error)
+      alert('Error: ' + (error.response?.data?.error || error.message))
+    } finally {
+      loading.value = false
     }
   }
 }
