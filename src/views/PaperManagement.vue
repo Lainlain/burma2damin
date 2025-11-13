@@ -548,7 +548,7 @@ const removeAllImagesFromType = async () => {
   if (confirmed) {
     try {
       loading.value = true
-      const response = await axios.delete(`/api/admin/paper/types/${selectedType.value}/images`)
+      const response = await axios.delete(`/api/admin/paper/type/${selectedType.value}/removeall`)
       alert(`Successfully deleted ${response.data.count} images from "${typeName}"`)
       await fetchPapers()
       await fetchPaperTypes() // Refresh type counts
