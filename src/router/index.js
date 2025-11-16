@@ -8,6 +8,7 @@ const PaperManagement = () => import('../views/PaperManagement.vue')
 const ThreeDManagement = () => import('../views/ThreeDManagement.vue')
 const AppConfigView = () => import('../views/AppConfigView.vue')
 const ChatManagement = () => import('../views/ChatManagement.vue')
+const NotificationManagement = () => import('../views/NotificationManagement.vue')
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/chat',
     name: 'Chat',
     component: ChatManagement
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: NotificationManagement
   }
 ]
 

@@ -184,9 +184,18 @@ const editThreeD = (item) => {
 const saveThreeD = async () => {
   try {
     if (editMode.value) {
-      await axios.put(`/api/admin/threed/${formData.value.result_id}`, formData.value)
+      // Update: PUT /api/burma2d/3d with body { id, result }
+      await axios.put('/api/burma2d/3d', {
+        id: formData.value.result_id,
+        date: formData.value.date,
+        result: formData.value.result
+      })
     } else {
-      await axios.post('/api/admin/threed', formData.value)
+      // Create: POST /api/burma2d/3d with body { date, result }
+      await axios.post('/api/burma2d/3d', {
+        date: formData.value.date,
+        result: formData.value.result
+      })
     }
     dialog.value = false
     await fetchThreeD()
@@ -199,7 +208,10 @@ const saveThreeD = async () => {
 const deleteThreeD = async (item) => {
   if (confirm('Are you sure you want to delete this 3D result?')) {
     try {
-      await axios.delete(`/api/admin/threed/${item.result_id}`)
+      // Delete: DELETE /api/burma2d/3d with body { id }
+      await axios.delete('/api/burma2d/3d', {
+        data: { id: item.result_id }
+      })
       await fetchThreeD()
     } catch (error) {
       console.error('Error deleting 3D result:', error)
