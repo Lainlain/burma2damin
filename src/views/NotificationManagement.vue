@@ -107,7 +107,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import axios from 'axios'
+import axios from '@/config/axios'
 
 const form = ref(null)
 const loading = ref(false)
