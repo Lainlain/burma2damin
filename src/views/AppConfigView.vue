@@ -57,6 +57,10 @@
           In-App Messages
           <v-chip size="small" class="ml-2">{{ messages.length }}</v-chip>
         </v-tab>
+        <v-tab value="adconfig">
+          <v-icon icon="mdi-timer" class="mr-2"></v-icon>
+          Ad Configuration
+        </v-tab>
         <v-tab value="preview">
           <v-icon icon="mdi-eye" class="mr-2"></v-icon>
           Preview
@@ -409,6 +413,182 @@
               </v-col>
             </v-row>
           </v-window-item>
+
+          <!-- Ad Configuration Tab -->
+          <v-window-item value="adconfig">
+            <v-row>
+              <v-col cols="12" md="8">
+                <v-card elevation="2">
+                  <v-card-title class="bg-primary">
+                    <v-icon icon="mdi-timer" class="mr-2"></v-icon>
+                    Native Ad Refresh Timer
+                  </v-card-title>
+                  <v-card-text class="pa-6">
+                    <v-alert
+                      type="info"
+                      variant="tonal"
+                      class="mb-4"
+                      icon="mdi-information"
+                    >
+                      Configure how often native ads refresh on the Live page in the mobile app.
+                    </v-alert>
+
+                    <v-text-field
+                      v-model.number="adConfig.native_ad_timer_seconds"
+                      label="Refresh Timer (seconds)"
+                      placeholder="60"
+                      prepend-icon="mdi-clock-outline"
+                      suffix="seconds"
+                      variant="outlined"
+                      density="comfortable"
+                      type="number"
+                      :min="30"
+                      :max="300"
+                      hint="Timer duration between 30-300 seconds (recommended: 60-90)"
+                      persistent-hint
+                      class="mb-4"
+                    ></v-text-field>
+
+                    <v-slider
+                      v-model="adConfig.native_ad_timer_seconds"
+                      :min="30"
+                      :max="300"
+                      :step="10"
+                      thumb-label
+                      color="primary"
+                      class="mt-4"
+                    >
+                      <template v-slot:prepend>
+                        <v-chip size="small" color="grey">30s</v-chip>
+                      </template>
+                      <template v-slot:append>
+                        <v-chip size="small" color="grey">300s</v-chip>
+                      </template>
+                    </v-slider>
+
+                    <v-divider class="my-4"></v-divider>
+
+                    <div class="text-subtitle-2 font-weight-bold mb-2">
+                      <v-icon icon="mdi-information-outline" size="small" class="mr-1"></v-icon>
+                      Current Setting
+                    </div>
+                    <v-chip
+                      size="large"
+                      color="primary"
+                      prepend-icon="mdi-timer"
+                      class="mb-2"
+                    >
+                      {{ adConfig.native_ad_timer_seconds }} seconds
+                      ({{ Math.round(adConfig.native_ad_timer_seconds / 60 * 10) / 10 }} minutes)
+                    </v-chip>
+
+                    <v-alert
+                      type="success"
+                      variant="tonal"
+                      class="mt-4"
+                      icon="mdi-check-circle"
+                    >
+                      Changes will apply to all mobile app users on next config fetch.
+                    </v-alert>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+
+              <v-col cols="12" md="4">
+                <v-card elevation="2">
+                  <v-card-title class="bg-grey-darken-3">
+                    <v-icon icon="mdi-lightbulb-on" class="mr-2"></v-icon>
+                    Recommendations
+                  </v-card-title>
+                  <v-card-text class="pa-4">
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        🟢 Recommended (60-90s)
+                      </div>
+                      <p class="text-caption text-medium-emphasis">
+                        Good balance between ad revenue and user experience.
+                      </p>
+                    </div>
+
+                    <v-divider class="my-3"></v-divider>
+
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        🟡 Moderate (40-60s)
+                      </div>
+                      <p class="text-caption text-medium-emphasis">
+                        More frequent ad refreshes, higher revenue potential.
+                      </p>
+                    </div>
+
+                    <v-divider class="my-3"></v-divider>
+
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        🔴 Conservative (90-120s)
+                      </div>
+                      <p class="text-caption text-medium-emphasis">
+                        Less intrusive, better user experience, lower revenue.
+                      </p>
+                    </div>
+
+                    <v-divider class="my-3"></v-divider>
+
+                    <v-alert
+                      type="warning"
+                      variant="text"
+                      density="compact"
+                      icon="mdi-alert"
+                      class="mt-3"
+                    >
+                      Too frequent refreshes (&lt;40s) may violate AdMob policies.
+                    </v-alert>
+                  </v-card-text>
+                </v-card>
+
+                <v-card elevation="2" class="mt-4">
+                  <v-card-title class="bg-grey-darken-3">
+                    <v-icon icon="mdi-chart-line" class="mr-2"></v-icon>
+                    Quick Presets
+                  </v-card-title>
+                  <v-card-text class="pa-2">
+                    <v-btn
+                      block
+                      variant="outlined"
+                      class="mb-2"
+                      @click="adConfig.native_ad_timer_seconds = 45"
+                    >
+                      45 seconds (Aggressive)
+                    </v-btn>
+                    <v-btn
+                      block
+                      variant="outlined"
+                      color="success"
+                      class="mb-2"
+                      @click="adConfig.native_ad_timer_seconds = 60"
+                    >
+                      60 seconds (Default)
+                    </v-btn>
+                    <v-btn
+                      block
+                      variant="outlined"
+                      class="mb-2"
+                      @click="adConfig.native_ad_timer_seconds = 90"
+                    >
+                      90 seconds (Balanced)
+                    </v-btn>
+                    <v-btn
+                      block
+                      variant="outlined"
+                      @click="adConfig.native_ad_timer_seconds = 120"
+                    >
+                      120 seconds (Conservative)
+                    </v-btn>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-window-item>
         </v-window>
       </v-card-text>
     </v-card>
@@ -644,6 +824,11 @@ const version = ref({
 // In-App Messages Data
 const messages = ref([])
 
+// Ad Configuration Data
+const adConfig = ref({
+  native_ad_timer_seconds: 60 // Default 60 seconds
+})
+
 // Message Dialog
 const messageDialog = ref(false)
 const editingMessage = ref({})
@@ -653,8 +838,8 @@ const editingMessageIndex = ref(null)
 const messageImageFile = ref(null)
 const uploadingMessageImage = ref(false)
 
-// AppConfig Server URL - ONLY use standalone server on port 8080
-const CONFIG_API_URL = import.meta.env.VITE_CONFIG_SERVER_URL || 'http://localhost:8080/api/burma2d'
+// AppConfig Server URL - ONLY use standalone server on port 8585
+const CONFIG_API_URL = import.meta.env.VITE_CONFIG_SERVER_URL || 'http://localhost:8585/api/burma2d'
 
 // Main Server URL for image uploads (port 4545)
 const MAIN_SERVER_URL = import.meta.env.VITE_MAIN_SERVER_URL || 'http://localhost:4545'
@@ -793,8 +978,10 @@ const loadConfiguration = async () => {
     
     version.value = config.app_version
     messages.value = config.in_app_messages || []
+    adConfig.value = config.ad_config || { native_ad_timer_seconds: 60 }
     
-    console.log('✅ Configuration loaded from AppConfig server (port 8080):', config)
+    console.log('✅ Configuration loaded from AppConfig server (port 8585):', config)
+    console.log('⏱️ Ad timer loaded:', adConfig.value.native_ad_timer_seconds, 'seconds')
   } catch (error) {
     console.error('❌ Failed to load from AppConfig server:', error)
     saveMessage.value = 'Failed to load configuration: ' + error.message
@@ -809,17 +996,27 @@ const saveConfiguration = async () => {
   saveMessage.value = ''
   
   try {
+    // Validate ad timer range
+    if (adConfig.value.native_ad_timer_seconds < 30 || adConfig.value.native_ad_timer_seconds > 300) {
+      saveMessage.value = '❌ Ad timer must be between 30 and 300 seconds'
+      saveSuccess.value = false
+      saving.value = false
+      return
+    }
+    
     const config = {
       app_version: version.value,
-      in_app_messages: messages.value
+      in_app_messages: messages.value,
+      ad_config: adConfig.value
     }
     
     const response = await axios.post(`${CONFIG_API_URL}/config`, config)
     
-    saveMessage.value = '✅ Configuration saved successfully to AppConfig server!'
+    saveMessage.value = `✅ Configuration saved successfully! Ad timer: ${adConfig.value.native_ad_timer_seconds}s`
     saveSuccess.value = true
     
-    console.log('✅ Configuration saved to AppConfig server (port 8080):', response.data)
+    console.log('✅ Configuration saved to AppConfig server (port 8585):', response.data)
+    console.log('⏱️ Ad timer saved:', adConfig.value.native_ad_timer_seconds, 'seconds')
   } catch (error) {
     console.error('❌ Failed to save configuration:', error)
     saveMessage.value = 'Failed to save configuration: ' + error.message
