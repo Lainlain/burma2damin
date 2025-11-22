@@ -61,6 +61,10 @@
           <v-icon icon="mdi-timer" class="mr-2"></v-icon>
           Ad Configuration
         </v-tab>
+        <v-tab value="adunits">
+          <v-icon icon="mdi-google-ads" class="mr-2"></v-icon>
+          Ad Units
+        </v-tab>
         <v-tab value="preview">
           <v-icon icon="mdi-eye" class="mr-2"></v-icon>
           Preview
@@ -343,7 +347,7 @@
                       <div class="mb-4 pa-3" style="background: #1a1a2e; border-radius: 8px;">
                         <div class="d-flex justify-space-between mb-2">
                           <span class="text-caption">Your Version:</span>
-                          <span class="text-caption font-weight-bold">1.0.0 (100)</span>
+                          <span class="text-caption font-weight-bold">1.0.0 (1)</span>
                         </div>
                         <v-icon icon="mdi-arrow-down" size="small" class="d-block mx-auto"></v-icon>
                         <div class="d-flex justify-space-between mt-2">
@@ -589,6 +593,195 @@
               </v-col>
             </v-row>
           </v-window-item>
+
+          <!-- Ad Units Tab -->
+          <v-window-item value="adunits">
+            <v-row>
+              <v-col cols="12" md="8">
+                <v-card elevation="2">
+                  <v-card-title class="bg-primary">
+                    <v-icon icon="mdi-google-ads" class="mr-2"></v-icon>
+                    AdMob Ad Unit IDs
+                  </v-card-title>
+                  <v-card-text class="pa-6">
+                    <v-alert
+                      type="info"
+                      variant="tonal"
+                      class="mb-4"
+                      icon="mdi-information"
+                    >
+                      Configure AdMob ad unit IDs for the mobile app. These IDs are fetched from the server on app startup.
+                    </v-alert>
+
+                    <!-- Banner Ad Unit -->
+                    <v-text-field
+                      v-model="adUnits.banner_ad_unit"
+                      label="Banner Ad Unit ID"
+                      placeholder="ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"
+                      prepend-icon="mdi-panorama-horizontal"
+                      variant="outlined"
+                      density="comfortable"
+                      hint="Banner ad shown at bottom of screens"
+                      persistent-hint
+                      class="mb-4"
+                    ></v-text-field>
+
+                    <!-- Interstitial Ad Unit -->
+                    <v-text-field
+                      v-model="adUnits.interstitial_ad_unit"
+                      label="Interstitial Ad Unit ID"
+                      placeholder="ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"
+                      prepend-icon="mdi-fullscreen"
+                      variant="outlined"
+                      density="comfortable"
+                      hint="Full-screen ad shown between navigation"
+                      persistent-hint
+                      class="mb-4"
+                    ></v-text-field>
+
+                    <!-- Native Ad Unit -->
+                    <v-text-field
+                      v-model="adUnits.native_ad_unit"
+                      label="Native Ad Unit ID"
+                      placeholder="ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"
+                      prepend-icon="mdi-image-filter-center-focus"
+                      variant="outlined"
+                      density="comfortable"
+                      hint="Native ad integrated into Live page content"
+                      persistent-hint
+                      class="mb-4"
+                    ></v-text-field>
+
+                    <!-- App Open Ad Unit -->
+                    <v-text-field
+                      v-model="adUnits.app_open_ad_unit"
+                      label="App Open Ad Unit ID"
+                      placeholder="ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"
+                      prepend-icon="mdi-launch"
+                      variant="outlined"
+                      density="comfortable"
+                      hint="Ad shown when app is launched or resumed"
+                      persistent-hint
+                      class="mb-4"
+                    ></v-text-field>
+
+                    <v-alert
+                      type="success"
+                      variant="tonal"
+                      class="mt-4"
+                      icon="mdi-check-circle"
+                    >
+                      Changes will apply to all mobile app users on next config fetch. No app rebuild required!
+                    </v-alert>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+
+              <v-col cols="12" md="4">
+                <v-card elevation="2">
+                  <v-card-title class="bg-grey-darken-3">
+                    <v-icon icon="mdi-test-tube" class="mr-2"></v-icon>
+                    Test Ad Units
+                  </v-card-title>
+                  <v-card-text class="pa-4">
+                    <v-alert
+                      type="warning"
+                      variant="tonal"
+                      density="compact"
+                      icon="mdi-alert"
+                      class="mb-3"
+                    >
+                      Use Google's test ad units for development and testing
+                    </v-alert>
+
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        📱 Banner
+                      </div>
+                      <p class="text-caption text-medium-emphasis font-mono">
+                        ca-app-pub-3940256099942544/6300978111
+                      </p>
+                    </div>
+
+                    <v-divider class="my-3"></v-divider>
+
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        🎬 Interstitial
+                      </div>
+                      <p class="text-caption text-medium-emphasis font-mono">
+                        ca-app-pub-3940256099942544/1033173712
+                      </p>
+                    </div>
+
+                    <v-divider class="my-3"></v-divider>
+
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        📰 Native
+                      </div>
+                      <p class="text-caption text-medium-emphasis font-mono">
+                        ca-app-pub-3940256099942544/2247696110
+                      </p>
+                    </div>
+
+                    <v-divider class="my-3"></v-divider>
+
+                    <div class="mb-3">
+                      <div class="text-subtitle-2 font-weight-bold mb-1">
+                        🚀 App Open
+                      </div>
+                      <p class="text-caption text-medium-emphasis font-mono">
+                        ca-app-pub-3940256099942544/9257395921
+                      </p>
+                    </div>
+
+                    <v-btn
+                      block
+                      variant="outlined"
+                      color="warning"
+                      class="mt-4"
+                      prepend-icon="mdi-restore"
+                      @click="useTestAdUnits"
+                    >
+                      Use Test Ad Units
+                    </v-btn>
+                  </v-card-text>
+                </v-card>
+
+                <v-card elevation="2" class="mt-4">
+                  <v-card-title class="bg-grey-darken-3">
+                    <v-icon icon="mdi-information-outline" class="mr-2"></v-icon>
+                    Important Notes
+                  </v-card-title>
+                  <v-card-text class="pa-4">
+                    <v-list density="compact" class="bg-transparent">
+                      <v-list-item prepend-icon="mdi-check-circle" class="px-0">
+                        <div class="text-caption">
+                          Changes take effect immediately after saving
+                        </div>
+                      </v-list-item>
+                      <v-list-item prepend-icon="mdi-check-circle" class="px-0">
+                        <div class="text-caption">
+                          App will fetch new ad units on next startup
+                        </div>
+                      </v-list-item>
+                      <v-list-item prepend-icon="mdi-check-circle" class="px-0">
+                        <div class="text-caption">
+                          No app rebuild or resubmission required
+                        </div>
+                      </v-list-item>
+                      <v-list-item prepend-icon="mdi-alert" class="px-0">
+                        <div class="text-caption">
+                          Always test with test ad units first
+                        </div>
+                      </v-list-item>
+                    </v-list>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-window-item>
         </v-window>
       </v-card-text>
     </v-card>
@@ -810,9 +1003,9 @@ const saveSuccess = ref(false)
 
 // App Version Data
 const version = ref({
-  latest_version: '1.5.0',
-  latest_version_code: 150,
-  minimum_version_code: 100,
+  latest_version: '1.0.0',
+  latest_version_code: 1,
+  minimum_version_code: 1,
   force_update: false,
   update_title: '🎉 New Update Available!',
   update_message: "We've added exciting new features and improvements to enhance your experience!",
@@ -827,6 +1020,14 @@ const messages = ref([])
 // Ad Configuration Data
 const adConfig = ref({
   native_ad_timer_seconds: 60 // Default 60 seconds
+})
+
+// Ad Units Data (banner, interstitial, native, app_open)
+const adUnits = ref({
+  banner_ad_unit: '',
+  interstitial_ad_unit: '',
+  native_ad_unit: '',
+  app_open_ad_unit: ''
 })
 
 // Message Dialog
@@ -979,9 +1180,16 @@ const loadConfiguration = async () => {
     version.value = config.app_version
     messages.value = config.in_app_messages || []
     adConfig.value = config.ad_config || { native_ad_timer_seconds: 60 }
+    adUnits.value = config.ad_units || {
+      banner_ad_unit: '',
+      interstitial_ad_unit: '',
+      native_ad_unit: '',
+      app_open_ad_unit: ''
+    }
     
     console.log('✅ Configuration loaded from AppConfig server (port 8585):', config)
     console.log('⏱️ Ad timer loaded:', adConfig.value.native_ad_timer_seconds, 'seconds')
+    console.log('📦 Ad units loaded:', adUnits.value)
   } catch (error) {
     console.error('❌ Failed to load from AppConfig server:', error)
     saveMessage.value = 'Failed to load configuration: ' + error.message
@@ -1004,10 +1212,27 @@ const saveConfiguration = async () => {
       return
     }
     
+    // Validate ad timer range
+    if (adConfig.value.native_ad_timer_seconds < 30 || adConfig.value.native_ad_timer_seconds > 300) {
+      saveMessage.value = '❌ Ad timer must be between 30 and 300 seconds'
+      saveSuccess.value = false
+      saving.value = false
+      return
+    }
+
+    // Validate ad units (server also validates) - allow empty to let server defaults remain
+    // but warn admin if any field is empty
+    const emptyUnits = Object.entries(adUnits.value).filter(([k, v]) => !v || v.trim() === '')
+    if (emptyUnits.length > 0) {
+      // we'll still allow saving; server will reject if required
+      console.warn('⚠️ Some ad unit fields are empty:', emptyUnits.map(e => e[0]).join(', '))
+    }
+
     const config = {
       app_version: version.value,
       in_app_messages: messages.value,
-      ad_config: adConfig.value
+      ad_config: adConfig.value,
+      ad_units: adUnits.value
     }
     
     const response = await axios.post(`${CONFIG_API_URL}/config`, config)
@@ -1024,6 +1249,18 @@ const saveConfiguration = async () => {
   } finally {
     saving.value = false
   }
+}
+
+// Use Google's test ad units (convenience)
+const useTestAdUnits = () => {
+  adUnits.value = {
+    banner_ad_unit: 'ca-app-pub-3940256099942544/6300978111',
+    interstitial_ad_unit: 'ca-app-pub-3940256099942544/1033173712',
+    native_ad_unit: 'ca-app-pub-3940256099942544/2247696110',
+    app_open_ad_unit: 'ca-app-pub-3940256099942544/9257395921'
+  }
+  saveMessage.value = 'Test ad units filled. Press Save to persist.'
+  saveSuccess.value = false
 }
 
 // Load config on mount
