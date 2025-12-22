@@ -1,8 +1,35 @@
 import axios from 'axios'
 
+// Determine base URL based on environment
+const getBaseURL = () => {
+  const envBaseURL = import.meta.env.VITE_API_BASE_URL || ''
+  
+  // Development mode (npm run dev) - uses .env.development
+  if (import.meta.env.DEV && envBaseURL) {
+    console.log('🔧 DEV mode - Using env:', envBaseURL)
+    return envBaseURL
+  }
+  
+  // Production mode with env variable set (real production server)
+  if (import.meta.env.PROD && envBaseURL && envBaseURL.startsWith('http')) {
+    console.log('🚀 PROD mode - Using env:', envBaseURL)
+    return envBaseURL
+  }
+  
+  // Local testing: Python server on port 8000 → point to Go server on 4545
+  if (typeof window !== 'undefined' && window.location.port === '8000') {
+    console.log('🐍 Python server detected - Connecting to Go server at localhost:4545')
+    return 'http://localhost:4545'
+  }
+  
+  // Default: use relative URLs (same origin as Vue app)
+  console.log('📍 Using relative URLs (same origin)')
+  return ''
+}
+
 // Create axios instance with base URL from environment variable
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '',
+  baseURL: getBaseURL(),
   timeout: 60000,  // 60 seconds for R2 image uploads
   headers: {
     'Content-Type': 'application/json'

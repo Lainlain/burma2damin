@@ -192,7 +192,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/config/axios'
 
 export default {
   name: 'ChatManagement',
@@ -220,7 +220,7 @@ export default {
     async loadMessages() {
       this.loading = true
       try {
-        const response = await axios.get('/api/burma2d/chat/admin/messages', {
+        const response = await axios.get('/api/burma2d/chatws/admin/messages', {
           params: {
             limit: 100
           }
@@ -237,7 +237,7 @@ export default {
     async loadBannedUsers() {
       this.loadingBanned = true
       try {
-        const response = await axios.get('/api/burma2d/chat/admin/banned')
+        const response = await axios.get('/api/burma2d/chatws/admin/banned')
         this.bannedUsers = response.data.banned_users || []
       } catch (error) {
         console.error('Error loading banned users:', error)
@@ -258,7 +258,7 @@ export default {
 
       this.banning = true
       try {
-        const response = await axios.post('/api/burma2d/chat/admin/ban', {
+        const response = await axios.post('/api/burma2d/chatws/admin/ban', {
           user_id: this.selectedMessage.user_id,
           reason: this.banReason,
           banned_by: 'admin'
@@ -285,7 +285,7 @@ export default {
       if (!confirm(`Unban ${banned.username}?`)) return
 
       try {
-        await axios.post('/api/burma2d/chat/admin/unban', {
+        await axios.post('/api/burma2d/chatws/admin/unban', {
           user_id: banned.user_id
         })
 
