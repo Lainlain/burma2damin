@@ -16,12 +16,6 @@ const getBaseURL = () => {
     return envBaseURL
   }
   
-  // Local testing: Python server on port 8000 → point to Go server on 4545
-  if (typeof window !== 'undefined' && window.location.port === '8000') {
-    console.log('🐍 Python server detected - Connecting to Go server at localhost:4545')
-    return 'http://localhost:4545'
-  }
-  
   // Default: use relative URLs (same origin as Vue app)
   console.log('📍 Using relative URLs (same origin)')
   return ''
