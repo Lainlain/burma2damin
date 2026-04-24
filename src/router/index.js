@@ -9,6 +9,7 @@ const ThreeDManagement = () => import('../views/ThreeDManagement.vue')
 const AppConfigView = () => import('../views/AppConfigView.vue')
 const ChatManagement = () => import('../views/ChatManagement.vue')
 const NotificationManagement = () => import('../views/NotificationManagement.vue')
+const HistoryManagement = () => import('../views/HistoryManagement.vue')
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/notifications',
     name: 'Notifications',
     component: NotificationManagement
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: HistoryManagement
   }
 ]
 

@@ -29,8 +29,40 @@
             >
               <v-card-text class="text-center">
                 <div class="text-h6 mb-2">{{ type.type_name }}</div>
-                <div class="text-caption">
+                <div class="text-caption mb-2">
                   {{ getPaperCountByType(type.type_id) }} images
+                </div>
+                
+                <!-- Grouping Toggle -->
+                <div class="d-flex align-center justify-center mt-3" @click.stop>
+                  <v-icon size="small" class="mr-2" :color="type.enable_grouping ? 'success' : 'grey'">
+                    {{ type.enable_grouping ? 'mdi-folder-multiple' : 'mdi-folder-off' }}
+                  </v-icon>
+                  <span class="text-caption mr-2">Grouping</span>
+                  <v-switch
+                    :model-value="type.enable_grouping"
+                    @update:model-value="toggleGrouping(type, $event)"
+                    color="success"
+                    hide-details
+                    density="compact"
+                    :disabled="toggleLoading === type.type_id"
+                  ></v-switch>
+                </div>
+                
+                <!-- Grouping Toggle -->
+                <div class="d-flex align-center justify-center mt-3" @click.stop>
+                  <v-icon size="small" class="mr-2" :color="type.enable_grouping ? 'success' : 'grey'">
+                    {{ type.enable_grouping ? 'mdi-folder-multiple' : 'mdi-folder-off' }}
+                  </v-icon>
+                  <span class="text-caption mr-2">Grouping</span>
+                  <v-switch
+                    :model-value="type.enable_grouping"
+                    @update:model-value="toggleGrouping(type, $event)"
+                    color="success"
+                    hide-details
+                    density="compact"
+                    :disabled="toggleLoading === type.type_id"
+                  ></v-switch>
                 </div>
               </v-card-text>
               <v-card-actions class="justify-center">
@@ -295,6 +327,7 @@ const loading = ref(false)
 const papers = ref([])
 const paperTypes = ref([])
 const selectedType = ref(null)
+const toggleLoading = ref(null)
 
 // Paper Type Management
 const typeDialog = ref(false)
@@ -417,6 +450,32 @@ const deleteType = async (type) => {
       console.error('Error deleting paper type:', error)
       alert('Error: ' + (error.response?.data?.error || error.message))
     }
+  }
+}
+
+// Toggle grouping for a paper type
+const toggleGrouping = async (type, newValue) => {
+  toggleLoading.value = type.type_id
+  try {
+    await axios.put(`/api/admin/paper/types/${type.type_id}/grouping`, {
+      enable_grouping: newValue
+    })
+    
+    // Update local state
+    const typeIndex = paperTypes.value.findIndex(t => t.type_id === type.type_id)
+    if (typeIndex !== -1) {
+      paperTypes.value[typeIndex].enable_grouping = newValue
+    }
+    
+    const status = newValue ? 'enabled' : 'disabled'
+    console.log(`✅ Grouping ${status} for "${type.type_name}"`)
+  } catch (error) {
+    console.error('Error toggling grouping:', error)
+    alert('Error: ' + (error.response?.data?.error || error.message))
+    // Revert on error
+    await fetchPaperTypes()
+  } finally {
+    toggleLoading.value = null
   }
 }
 

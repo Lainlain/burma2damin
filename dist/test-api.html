@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin API Debug</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #1a1a2e;
+            color: #eee;
+            padding: 20px;
+        }
+        .test {
+            margin: 10px 0;
+            padding: 10px;
+            background: #0f3460;
+            border-radius: 5px;
+        }
+        .success { background: #28a745; }
+        .error { background: #dc3545; }
+        button {
+            background: #FFD700;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        pre {
+            background: #000;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Burma 2D Admin - API Debug Tool</h1>
+    
+    <div id="results"></div>
+    
+    <h2>Run Tests:</h2>
+    <button onclick="testAll()">🚀 Test All APIs</button>
+    <button onclick="testGifts()">🎁 Test Gifts API</button>
+    <button onclick="testLive()">📡 Test Live Data</button>
+    <button onclick="testConfig()">⚙️ Test AppConfig</button>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        function addResult(title, success, data) {
+            const div = document.createElement('div');
+            div.className = 'test ' + (success ? 'success' : 'error');
+            div.innerHTML = `
+                <h3>${success ? '✅' : '❌'} ${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            resultsDiv.insertBefore(div, resultsDiv.firstChild);
+        }
+        
+        async function testAPI(url, title) {
+            try {
+                console.log('Testing:', url);
+                const response = await fetch(url);
+                const data = await response.json();
+                addResult(title, response.ok, { status: response.status, data });
+                return response.ok;
+            } catch (error) {
+                addResult(title, false, { error: error.message });
+                return false;
+            }
+        }
+        
+        async function testGifts() {
+            await testAPI('/api/burma2d/gifts', 'Gifts API');
+        }
+        
+        async function testLive() {
+            await testAPI('/api/burma2d/live', 'Live Lottery Data');
+        }
+        
+        async function testConfig() {
+            await testAPI('https://config.shwemyanmar2d.us/api/burma2d/config', 'AppConfig Server');
+        }
+        
+        async function testAll() {
+            resultsDiv.innerHTML = '<h2>Running tests...</h2>';
+            
+            // Test all endpoints
+            await testAPI('/api/burma2d/live', 'Live Data');
+            await testAPI('/api/burma2d/gifts', 'Gifts');
+            await testAPI('/api/burma2d/sliders', 'Sliders');
+            await testAPI('/api/burma2d/papers/types', 'Paper Types');
+            await testAPI('/api/burma2d/3d', '3D Results');
+            await testAPI('/api/burma2d/history', '2D History');
+            await testAPI('https://config.shwemyanmar2d.us/api/burma2d/config', 'AppConfig Server');
+            
+            console.log('All tests completed');
+        }
+        
+        // Auto-run on load
+        window.onload = () => {
+            testAll();
+        };
+    </script>
+</body>
+</html>
